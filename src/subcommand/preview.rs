@@ -81,7 +81,8 @@ impl Preview {
             satpoint: None,
             dry_run: false,
             destination_address: address.clone(),
-            cursed: false
+            cursed: false,
+            target_postage: 10000,
           },
         )),
       }

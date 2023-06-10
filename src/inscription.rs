@@ -716,7 +716,7 @@ mod tests {
         content_type: None,
         body: None,
       }
-      .append_reveal_script(script::Builder::new()),
+      .append_reveal_script(script::Builder::new(), false),
     );
 
     witness.push([]);

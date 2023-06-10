@@ -2093,7 +2093,7 @@ mod tests {
 
     let txid = server.bitcoin_rpc_server.broadcast_tx(TransactionTemplate {
       inputs: &[(1, 0, 0)],
-      witness: inscription("application/pdf", "hello").to_witness(),
+      witness: inscription("application/pdf", "hello").to_witness(false),
       ..Default::default()
     });
     let inscription_id = InscriptionId::from(txid);

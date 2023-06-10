@@ -45,6 +45,8 @@ pub(crate) struct Inscribe {
   pub(crate) destination_address: Address,
   #[clap(long, help = "whether the inscription is cursed")]
   pub(crate) cursed: bool,
+  #[clap(long, default_value = "10000", help = "target postage amount")]
+  pub(crate) target_postage: u64,
 }
 
 impl Inscribe {
@@ -82,7 +84,8 @@ impl Inscribe {
         commit_tx_change,
         reveal_tx_destination,
         self.fee_rate,
-        self.cursed
+        self.cursed,
+        Amount::from_sat(self.target_postage)
       )?;
 
     utxos.insert(
@@ -145,7 +148,8 @@ impl Inscribe {
     change: [Address; 2],
     destination: Address,
     fee_rate: FeeRate,
-    cursed: bool
+    cursed: bool,
+    target_postage: Amount,
   ) -> Result<(Transaction, Transaction, TweakedKeyPair)> {
     let satpoint = if let Some(satpoint) = satpoint {
       satpoint
@@ -219,7 +223,7 @@ impl Inscribe {
       commit_tx_address.clone(),
       change,
       fee_rate,
-      reveal_fee + TransactionBuilder::TARGET_POSTAGE,
+      reveal_fee + target_postage
     )?;
 
     let (vout, output) = unsigned_commit_tx
@@ -383,7 +387,8 @@ mod tests {
       [commit_address, change(1)],
       reveal_address,
       FeeRate::try_from(1.0).unwrap(),
-      false
+      false,
+      Amount::from_sat(10000)
     )
     .unwrap();
 
@@ -413,7 +418,8 @@ mod tests {
       [commit_address, change(1)],
       reveal_address,
       FeeRate::try_from(1.0).unwrap(),
-      false
+      false,
+      Amount::from_sat(10000)
     )
     .unwrap();
 
@@ -447,7 +453,8 @@ mod tests {
       [commit_address, change(1)],
       reveal_address,
       FeeRate::try_from(1.0).unwrap(),
-      false
+      false,
+      Amount::from_sat(10000)
     )
     .unwrap_err()
     .to_string();
@@ -488,7 +495,8 @@ mod tests {
       [commit_address, change(1)],
       reveal_address,
       FeeRate::try_from(1.0).unwrap(),
-      false
+      false,
+      Amount::from_sat(10000)
     )
     .is_ok())
   }
@@ -523,7 +531,8 @@ mod tests {
       [commit_address, change(1)],
       reveal_address,
       FeeRate::try_from(fee_rate).unwrap(),
-      false
+      false,
+      Amount::from_sat(10000)
     )
     .unwrap();
 
@@ -556,7 +565,8 @@ mod tests {
       [commit_address, change(1)],
       reveal_address,
       FeeRate::try_from(1.0).unwrap(),
-      false
+      false,
+      Amount::from_sat(10000)
     )
     .unwrap_err()
     .to_string();
