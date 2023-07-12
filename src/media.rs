@@ -100,6 +100,7 @@ const TABLE: &[(&str, Media, &[&str])] = &[
   ("image/webp", Media::Image, &["webp"]),
   ("text/html;charset=utf-8", Media::Iframe, &["html"]),
   ("text/plain;charset=utf-8", Media::Text, &["txt"]),
+  ("text/javascript", Media::Text, &["js"]),
   ("video/mp4", Media::Video, &["mp4"]),
   ("video/webm", Media::Video, &["webm"]),
 ];
